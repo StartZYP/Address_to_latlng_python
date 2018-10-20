@@ -9,12 +9,13 @@
 
 http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location=30.68093376455154,104.06552381979525&output=json&pois=1&ak=你的ak
 
+API请求有限制所以需要延迟一下,不然返回为空
 ak查看地址：http://lbsyun.baidu.com/apiconsole/key
 '''
 import requests
 import json
 from openpyxl import load_workbook
-
+import time
 app_key='9elMuik91gtWCPbmW4pGdVOjplbAx5GV'
 file_name='excel.xlsx'
 
@@ -28,8 +29,10 @@ def get_address(latlnglist):
             'pois':'1',
             'ak':app_key
         }
+        time.sleep(0.4)
         response = requests.get('http://api.map.baidu.com/geocoder/v2/',params=params)
         jsontext = json.loads(response.text)
+        print(jsontext)
         try:
             templist.append(jsontext['result']['addressComponent']['province']+','+jsontext['result']['addressComponent']['city']+','+jsontext['result']['addressComponent']['district'])
         except Exception as e:
